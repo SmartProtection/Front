@@ -16,10 +16,10 @@ function Navigation() {
             New Policy
           </Nav.Link>
           <Nav.Link as={Link} to="/claim/view">
-            View Claims
+            View Claim
           </Nav.Link>
-          <Nav.Link as={Link} to="/claim/process">
-            Process Claims
+          <Nav.Link as={Link} to="/claim/new">
+            New Claim
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
