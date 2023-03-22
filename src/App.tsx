@@ -18,7 +18,7 @@ const App = () => {
         <header className="App-header">
           <Navigation />
         </header>
-        <Container className="App-body">
+        <Container className="App-body my-3">
           <AppRouter />
         </Container>
         <Footer />

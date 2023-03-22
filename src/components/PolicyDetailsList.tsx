@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PolicyDetails } from "../containers/ViewPolicy";
 import { getPolicyContract } from "../helpers/ContractManager";
@@ -98,12 +98,33 @@ const payPremium = async (policyDetails: PolicyDetails) => {
 const PolicyDetailsList = (props: any) => {
   const { isPolicyHolder, policyDetails, policyPayments } = props;
 
+  const navigate = useNavigate();
+  const redirectToNewClaim = () => {
+    let path = "/claim/new";
+    navigate(path);
+  };
+
   if (isPolicyHolder) {
     return (
       <Container>
-        <ViewPolicyDetails policyDetails={policyDetails} />
-        <ViewPolicyPayments policyPayments={policyPayments} />
-        <Button onClick={() => payPremium(policyDetails)}>Pay premium</Button>
+        <Row className="my-3">
+          <ViewPolicyDetails policyDetails={policyDetails} />
+        </Row>
+        <Row className="my-3">
+          <ViewPolicyPayments policyPayments={policyPayments} />
+        </Row>
+        <Row className="my-3 justify-content-center">
+          <Col md={3} className="d-flex justify-content-end">
+            <Button onClick={() => payPremium(policyDetails)}>
+              Pay premium
+            </Button>
+          </Col>
+          <Col md={3} className="d-flex justify-content-start">
+            <Button variant="secondary" onClick={redirectToNewClaim}>
+              Create Claim Application
+            </Button>
+          </Col>
+        </Row>
       </Container>
     );
   }

@@ -35,11 +35,11 @@ export const getClaimApplicationContract =
   async (): Promise<ethers.Contract> => {
     const claimApplicationContractAddress =
       await getClaimApplicationContractAddress();
-    const policyContract = getContract(
+    const claimApplicationContract = getContract(
       claimApplicationContractAddress,
       ClaimApplicationArtifacts.abi
     );
-    return policyContract;
+    return claimApplicationContract;
   };
 
 const getContractAddress = async (registryKey: string) => {

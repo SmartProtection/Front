@@ -93,14 +93,13 @@ const ViewPolicy = () => {
 
   useEffect(() => {
     isPolicyHolder();
-    console.log("check policy holder");
   }, []);
 
   useEffect(() => {
-    getPolicyDetails();
-    getPolicyPayments();
-    console.log(hasPolicy);
-    console.log("check policy details");
+    if (hasPolicy) {
+      getPolicyDetails();
+      getPolicyPayments();
+    }
   }, [hasPolicy]);
 
   return (
