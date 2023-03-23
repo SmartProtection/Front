@@ -2,7 +2,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const ViewClaimDetails = (props: any) => {
+export const ViewClaimDetails = (props: any) => {
   const { claimApplication } = props;
 
   return (

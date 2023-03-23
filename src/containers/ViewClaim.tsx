@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Container } from "react-bootstrap";
@@ -43,8 +43,11 @@ const ViewClaim = () => {
   const hasClaimApplication = async () => {
     try {
       const claimApplicationContract = await getClaimApplicationContract();
+      const accounts = await getProvider().listAccounts();
       const hasApplication: boolean =
-        await claimApplicationContract.hasClaimApplication();
+        await claimApplicationContract.hasClaimApplication(
+          ethers.utils.getAddress(accounts[0])
+        );
       console.log(hasApplication);
       setHasApplication(hasApplication);
     } catch (error: any) {

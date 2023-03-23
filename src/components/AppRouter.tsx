@@ -17,7 +17,10 @@ const AppRouter = () => {
       <Route path="/claim/new" element={<NewClaim />} />
       <Route path="/claim/view/" element={<ViewClaim />} />
       <Route path="/claim/view-all" element={<ViewClaims />} />
-      <Route path="/claim/process:id" element={<ProcessClaim />} />
+      <Route
+        path="/claim/process/:policyHolderAddress"
+        element={<ProcessClaim />}
+      />
     </Routes>
   );
 };

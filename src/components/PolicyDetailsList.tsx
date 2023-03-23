@@ -130,7 +130,7 @@ const PolicyDetailsList = (props: any) => {
   }
   return (
     <Container>
-      <h1>You don't have any policy</h1>
+      <h1>You don't have a policy</h1>
       <Row>
         <Nav.Link as={Link} to="/policy/new">
           Create New Policy
