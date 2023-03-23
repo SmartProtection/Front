@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { encryptMessage, getEncryptionPublicKey } from "../helpers/Crypto";
 
 interface CreatePolicyFormProps {
-  onSubmitClaim: (claimAmount: number) => void;
+  onSubmitClaim: (claimAmount: number, encryptedProof: string) => void;
   hasPolicy: boolean;
 }
 
@@ -13,11 +14,19 @@ const CreateClaimForm: React.FC<CreatePolicyFormProps> = ({
 }) => {
   const [claimAmount, setClaimAmount] = useState<number>(0);
   const [proof, setProof] = useState<string>("");
+  const [encryptedProof, setEncryptedProof] = useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmitClaim(claimAmount);
+    onSubmitClaim(claimAmount, encryptedProof);
   };
+
+  useEffect(() => {
+    if (proof.length !== 0) {
+      const encryptedMessage = encryptMessage(proof);
+      setEncryptedProof(encryptedMessage);
+    }
+  }, [proof]);
 
   if (hasPolicy) {
     return (
@@ -46,7 +55,14 @@ const CreateClaimForm: React.FC<CreatePolicyFormProps> = ({
             />
           </Col>
         </Form.Group>
-
+        <Form.Group as={Row} controlId="formEncryptedProof">
+          <Form.Label column sm={3}>
+            Encrypted Proof
+          </Form.Label>
+          <Col sm={9}>
+            <Form.Control as="textarea" value={encryptedProof} disabled />
+          </Col>
+        </Form.Group>
         <div className="text-center mt-4">
           <Button variant="primary" type="submit">
             Submit claim

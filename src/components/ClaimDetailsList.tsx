@@ -1,6 +1,7 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { ClaimApplication } from "../containers/ViewClaim";
 
 export const ViewClaimDetails = (props: any) => {
   const { claimApplication } = props;
@@ -13,6 +14,10 @@ export const ViewClaimDetails = (props: any) => {
       <Row>
         <Col>Policy holder:</Col>
         <Col>{claimApplication.policyHolder.toString()}</Col>
+      </Row>
+      <Row>
+        <Col>Claim proof:</Col>
+        <Col>{claimApplication.proof.toString().substr(0, 25)}...</Col>
       </Row>
       <Row>
         <Col>Claim amount:</Col>

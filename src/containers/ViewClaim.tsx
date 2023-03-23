@@ -10,6 +10,7 @@ import { getTxErrorReason } from "../helpers/Parser";
 
 export interface ClaimApplication {
   policyHolder: string;
+  proof: string;
   amount: BigNumber;
   verified: Boolean;
   paid: Boolean;
@@ -20,6 +21,7 @@ const ViewClaim = () => {
 
   const [claimApplication, setClaimApplication] = useState<ClaimApplication>({
     policyHolder: "",
+    proof: "",
     amount: BigNumber.from(0),
     verified: false,
     paid: false,

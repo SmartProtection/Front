@@ -7,19 +7,23 @@ import { useEffect, useState } from "react";
 import { getClaimApplicationContract } from "../helpers/ContractManager";
 import { getTxErrorReason } from "../helpers/Parser";
 import { useParams } from "react-router-dom";
+import { getProvider } from "../helpers/Connection";
 
 export interface ClaimApplication {
   policyHolder: string;
+  proof: string;
   amount: BigNumber;
   verified: Boolean;
   paid: Boolean;
 }
 
 const ProcessClaim = () => {
+  const [currentAccount, setCurrentAccount] = useState<string>("");
   const [hasApplication, setHasApplication] = useState<boolean>(false);
 
   const [claimApplication, setClaimApplication] = useState<ClaimApplication>({
     policyHolder: "",
+    proof: "",
     amount: BigNumber.from(0),
     verified: false,
     paid: false,
@@ -55,6 +59,19 @@ const ProcessClaim = () => {
     }
   };
 
+  const getCurrentAccount = async () => {
+    try {
+      const accounts = await getProvider().listAccounts();
+      const currentAccount = accounts[0];
+      console.log(currentAccount);
+      setCurrentAccount(currentAccount);
+    } catch (error: any) {
+      const errorReason = getTxErrorReason(error.message);
+      console.log(`Error: ${error.message}`);
+      toast.error(`Cannot receive current account. ${errorReason}`);
+    }
+  };
+
   useEffect(() => {
     hasClaimApplication();
   }, []);
@@ -62,12 +79,14 @@ const ProcessClaim = () => {
   useEffect(() => {
     if (hasApplication) {
       getClaim();
+      getCurrentAccount();
     }
   }, [hasApplication]);
 
   return (
     <Container>
       <ClaimDetailsListProcess
+        currentAccount={currentAccount}
         hasApplication={hasApplication}
         claimApplication={claimApplication}
       />

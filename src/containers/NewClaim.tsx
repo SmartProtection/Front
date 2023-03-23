@@ -19,12 +19,16 @@ const NewClaim: React.FC = () => {
     BigNumber.from(0)
   );
 
-  const submitClaim = async (claimAmount: number) => {
+  const submitClaim = async (claimAmount: number, encryptedProof: string) => {
     try {
       const claimApplicationContract = await getClaimApplicationContract();
-      const result = await claimApplicationContract.submitClaim(claimAmount, {
-        value: policyDeductible,
-      });
+      const result = await claimApplicationContract.submitClaim(
+        claimAmount,
+        encryptedProof,
+        {
+          value: policyDeductible,
+        }
+      );
       console.log("Tx response:", result.toString());
       toast.success("Claim application created");
     } catch (error: any) {

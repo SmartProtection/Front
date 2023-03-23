@@ -3,8 +3,10 @@ import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getClaimApplicationContract } from "../helpers/ContractManager";
+import { decryptMessage } from "../helpers/Crypto";
 import { getTxErrorReason } from "../helpers/Parser";
 import { ViewClaimDetails } from "./ClaimDetailsList";
+import { useEffect, useState } from "react";
 
 const rejectClaim = async (policyHolder: string) => {
   try {
@@ -46,13 +48,50 @@ const payClaim = async (policyHolder: string) => {
 };
 
 const ClaimDetailsListProcess = (props: any) => {
-  const { hasApplication, claimApplication } = props;
+  const [decryptedProof, setDecryptedProof] = useState<string>("");
+
+  const { hasApplication, claimApplication, currentAccount } = props;
+
+  const decryptProof = async (encryptedProof: string) => {
+    const insurer = currentAccount;
+    console.log(`Insurer: ${insurer}`);
+    if (insurer.length !== 0) {
+      const decryptedProof = await decryptMessage(encryptedProof, insurer);
+      setDecryptedProof(decryptedProof);
+    }
+  };
+
+  useEffect(() => {
+    if (decryptedProof.length !== 0) {
+      alert(decryptedProof);
+    }
+  }, [decryptedProof]);
+
+  const handleClick = async (event: any) => {
+    await decryptProof(claimApplication.proof);
+  };
 
   if (hasApplication) {
     return (
       <Container>
         <Row>
-          <ViewClaimDetails claimApplication={claimApplication} />
+          <ViewClaimDetails
+            onDecryptProof={decryptProof}
+            claimApplication={claimApplication}
+          />
+        </Row>
+        <Row>
+          <Col>Decrypted proof:</Col>
+          <Col>
+            {decryptedProof.length == 0
+              ? "Proof wasn't decrypted"
+              : decryptedProof}
+          </Col>
+          <Col>
+            <Button variant="outline-info" onClick={handleClick}>
+              Decrypt proof
+            </Button>
+          </Col>
         </Row>
         <Row className="justify-content-center">
           <Col md={2}>
